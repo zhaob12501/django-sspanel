@@ -245,12 +245,12 @@ class EhcoRelayConfigView(View):
         # TODO make this async
         rules: List[m.RelayRule] = node.relay_rules.all()
         name_rule_map = {rule.name: rule for rule in rules}
-        for data in request.json:
+        for data in request.json.get("stats", []):
             name = data["relay_label"]
             if name in name_rule_map:
                 rule = name_rule_map[name]
-                rule.up_traffic += data["stats"]["up"] * node.enlarge_scale
-                rule.down_traffic += data["stats"]["down"] * node.enlarge_scale
+                rule.up_traffic += data["up_bytes"] * node.enlarge_scale
+                rule.down_traffic += data["down_bytes"] * node.enlarge_scale
         for rule in rules:
             rule.save()
         return JsonResponse(data={})
