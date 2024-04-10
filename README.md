@@ -7,7 +7,6 @@
 [![code](https://github.com/Ehco1996/django-sspanel/actions/workflows/cd.yml/badge.svg)](https://github.com/Ehco1996/django-sspanel/actions/workflows/cd.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/ehco1996/django-sspanel)](https://hub.docker.com/r/ehco1996/django-sspanel)
 
-* Telegram group : [invite link](https://t.me/Ehcobreakwa11)
 
 ## 部署教程
 
