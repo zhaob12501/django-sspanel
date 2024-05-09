@@ -461,6 +461,10 @@ class ProxyNode(BaseNodeModel, SequenceMixin):
     def relay_count(self):
         return self.relay_rules.all().count()
 
+    @property
+    def is_shared_node(self):
+        return not OccupancyConfig.objects.filter(proxy_node=self).exists()
+
     @cached_property
     def online_info(self):
         return UserTrafficLog.get_latest_online_log_info(self)

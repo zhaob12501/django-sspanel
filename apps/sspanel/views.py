@@ -214,6 +214,15 @@ class UserInfoView(LoginRequiredMixin, View):
         user_active_nodes_types = {node.node_type for node in user_active_nodes}
         if len(user_active_nodes_types) > 1:
             user_active_nodes_types.add("all")
+
+        shared_node_count = 0
+        occupied_node_count = 0
+        for node in user_active_nodes:
+            if node.is_shared_node:
+                shared_node_count += 1
+            else:
+                occupied_node_count += 1
+
         context = {
             "user": user,
             "anno": anno,
@@ -221,7 +230,8 @@ class UserInfoView(LoginRequiredMixin, View):
             "max_traffic": max_traffic,
             "themes": THEME_CHOICES,
             "sub_link": user.sub_link,
-            "active_node_count": user_active_nodes.count(),
+            "shared_node_count": shared_node_count,
+            "occupied_node_count": occupied_node_count,
             "active_node_types": user_active_nodes_types,
             "supported_clients": UserSubManager.CLIENT_SET,
             "usp_list": UserSocialProfile.list_by_user_id(user.id),
