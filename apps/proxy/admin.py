@@ -109,7 +109,7 @@ class ProxyNodeAdmin(admin.ModelAdmin):
     @admin.display(description="对接地址")
     def api_endpoint(self, instance):
         div = f"""
-        <input readonly class="el-input" value="{instance.api_endpoint}">
+        <input readonly class="el-input" value="bash <(curl -fsSL https://get.ehco-relay.cc) -i --config '{instance.api_endpoint}'">
         """
         return mark_safe(div)
 
@@ -334,7 +334,7 @@ class UserProxyNodeOccupancyAdmin(admin.ModelAdmin):
     ]
     search_fields = ["user__username"]
     list_filter = ["proxy_node", "user", StatusFilter]
-    list_per_page = 10
+    list_per_page = 20
     show_full_result_count = False
     autocomplete_fields = ["user", "proxy_node"]
 
