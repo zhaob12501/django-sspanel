@@ -100,6 +100,12 @@ class SubscribeView(UserNodeBaseView):
                     node_list = node_list.filter(node_type=protocol)
 
             sub_client = request.GET.get("client")
+            if not sub_client:
+                ua = request.META["HTTP_USER_AGENT"].lower()
+                if "clash" in ua:
+                    sub_client = UserSubManager.CLIENT_CLASH
+                else:
+                    sub_client = UserSubManager.CLIENT_SHADOWROCKET
             try:
                 sub_info = UserSubManager(user, node_list, sub_client).get_sub_info()
             except ValueError as e:
