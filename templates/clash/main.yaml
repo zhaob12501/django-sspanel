@@ -15,17 +15,17 @@ proxy-groups:
     use:
       - {{ provider_name }}-all
 
-  - name: PROXY-NATIVE-IP
-    type: select
-    use:
-      - {{ provider_name }}-native-ip
-
   {% for loc in node_location_set %}
   - name: {{ loc }}
     type: select
     use:
       - {{ provider_name }}-{{ loc }}
   {% endfor %}
+
+  - name: PROXY-NATIVE-IP
+    type: select
+    use:
+      - {{ provider_name }}-native-ip
 
   - name: auto
     type: url-test
@@ -71,7 +71,7 @@ proxy-providers:
     type: http
     url: {{ all_proxy_provider_url|safe }}&location={{ loc }}
     interval: 3600
-    path: ./providers/{{ provider_name }}-native-ip.yaml
+    path: ./providers/{{ provider_name }}-{{ loc }}.yaml
     health-check:
       enable: true
       interval: 300
