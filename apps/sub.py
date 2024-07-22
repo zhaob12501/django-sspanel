@@ -39,6 +39,10 @@ class UserSubManager:
         direct_ip_rule_set_url = user.direct_ip_rule_set_endpoint
         direct_domain_rule_set_url = user.direct_domain_rule_set_endpoint
 
+        node_location_set = set()
+        for node in self.node_list:
+            node_location_set.add(node.country)
+
         return render_to_string(
             "clash/main.yaml",
             {
@@ -48,6 +52,7 @@ class UserSubManager:
                 "native_ip_proxy_provider_url": native_ip_proxy_provider_url,
                 "direct_ip_rule_set_url": direct_ip_rule_set_url,
                 "direct_domain_rule_set_url": direct_domain_rule_set_url,
+                "node_location_set": node_location_set,
             },
         )
 

@@ -75,6 +75,56 @@ class ProxyNodeAdmin(admin.ModelAdmin):
     list_editable = ["sequence"]
     search_fields = ["name", "provider_remark"]
 
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "server",
+                    "node_type",
+                    "info",
+                    "country",
+                    "provider_remark",
+                    "level",
+                    "enable",
+                    "enable_direct",
+                    "enable_udp",
+                    "native_ip",
+                )
+            },
+        ),
+        (
+            "Traffic and Bandwidth",
+            {
+                "fields": (
+                    "used_traffic",
+                    "total_traffic",
+                    "upload_bandwidth_bytes",
+                    "download_bandwidth_bytes",
+                    "current_used_upload_bandwidth_bytes",
+                    "current_used_download_bandwidth_bytes",
+                )
+            },
+        ),
+        (
+            "Xray and Ehco Configuration",
+            {
+                "fields": (
+                    "xray_grpc_port",
+                    "ehco_listen_host",
+                    "ehco_listen_port",
+                    "ehco_listen_type",
+                    "ehco_transport_type",
+                    "ehco_web_port",
+                    "ehco_web_token",
+                    "ehco_log_level",
+                    "ehco_reload_interval",
+                )
+            },
+        ),
+    )
+
     def get_form(self, request, obj=None, **kwargs):
         if obj:
             help_texts = {

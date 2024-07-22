@@ -1,17 +1,17 @@
 # see https://github.com/Loyalsoldier/clash-rules
-
 mode: rule
 port: 7890
 socks-port: 7891
 allow-lan: true
 log-level: info
 external-controller: 0.0.0.0:9090
-
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
       - auto
+      {% for loc in node_location_set %}- {{ loc }}
+      {% endfor %}
     use:
       - {{ provider_name }}-all
 
@@ -20,15 +20,22 @@ proxy-groups:
     use:
       - {{ provider_name }}-native-ip
 
+  {% for loc in node_location_set %}
+  - name: {{ loc }}
+    type: select
+    use:
+      - {{ provider_name }}-{{ loc }}
+  {% endfor %}
+
   - name: auto
     type: url-test
     use:
       - {{ provider_name }}-all
-      - {{ provider_name }}-native-ip
     url: "http://www.gstatic.com/generate_204"
     interval: 300
     tolerance: 150
     lazy: true
+
   - name: Final
     type: select
     proxies:
@@ -59,6 +66,19 @@ proxy-providers:
         tolerance: 150
         lazy: true
         url: http://www.gstatic.com/generate_204
+{% for loc in node_location_set %}
+  {{ provider_name }}-{{ loc }}:
+    type: http
+    url: {{ all_proxy_provider_url|safe }}&location={{ loc }}
+    interval: 3600
+    path: ./providers/{{ provider_name }}-native-ip.yaml
+    health-check:
+      enable: true
+      interval: 300
+      tolerance: 150
+      lazy: true
+      url: http://www.gstatic.com/generate_204
+    {% endfor %}
 
 rule-providers:
   reject:
@@ -189,3 +209,4 @@ rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,Final
+

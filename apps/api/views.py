@@ -83,6 +83,10 @@ class UserNodeBaseView(View):
         native_ip = request.GET.get("native_ip")
         if native_ip:
             node_list = node_list.filter(native_ip=True)
+        location = request.GET.get("location")
+        if location:
+            node_list = node_list.filter(country=location)
+
         if node_list.count() == 0:
             return None, HttpResponseBadRequest("no active nodes for you")
 
