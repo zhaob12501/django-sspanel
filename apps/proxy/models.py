@@ -461,10 +461,6 @@ class ProxyNode(BaseNodeModel, SequenceMixin):
     def relay_count(self):
         return self.relay_rules.all().count()
 
-    @property
-    def is_shared_node(self):
-        return not OccupancyConfig.objects.filter(proxy_node=self).exists()
-
     @cached_property
     def online_info(self):
         return UserTrafficLog.get_latest_online_log_info(self)
@@ -1106,6 +1102,10 @@ class UserProxyNodeOccupancy(BaseModel):
         if limit:
             query = query[:limit]
         return query
+
+    @classmethod
+    def check_node_occupied_by_user(cls, node: ProxyNode, user: User):
+        return cls._valid_occupancy_query().filter(proxy_node=node, user=user).exists()
 
     def human_total_traffic(self):
         return utils.traffic_format(self.total_traffic)

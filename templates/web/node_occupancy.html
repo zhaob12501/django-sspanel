@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
 {% block authed %}
     <div class="column is-12">
-        <section class="hero is-warning is-smaill">
+        <section class="hero is-warning is-small">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">独享节点</h1>
                     <ul>
                         <li>流量和共享节点分开计算</li>
-                        <li>
-                            购买后，可在当前页面观察到流量的使用情况
-                        </li>
-                        <li>
-                            购买后，直接从订阅连接里就能拉取到所有的独享节点
-                        </li>
+                        <li>购买后，可在当前页面观察到流量的使用情况</li>
+                        <li>购买后，直接从订阅连接里就能拉取到所有的独享节点</li>
                     </ul>
                 </div>
             </div>
@@ -46,9 +42,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="pricing-table" id="id-pricing-table-purchasable">
+            <div class="pricing-table is-active" id="id-pricing-table-purchasable">
                 {% for node in purchasable_proxy_nodes %}
-                    <div class="pricing-plan {{ node.occupancy_config.color }} {{ node.occupancy_config.bulma_is_active }} ">
+                    <div class="pricing-plan {{ node.occupancy_config.color }} {{ node.occupancy_config.bulma_is_active }}">
                         <div class="plan-header">{{ node.name }}</div>
                         <div class="plan-price">
                             <span class="plan-price-amount">
@@ -84,7 +80,7 @@
                 </div>
                 <div class="pricing-table is-hidden" id="id-pricing-table-renewable">
                     {% for node in renewable_proxy_nodes %}
-                        <div class="pricing-plan {{ node.occupancy_config.color }} {{ node.occupancy_config.bulma_is_active }} ">
+                        <div class="pricing-plan {{ node.occupancy_config.color }} {{ node.occupancy_config.bulma_is_active }}">
                             <div class="plan-header">{{ node.name }}</div>
                             <div class="plan-price">
                                 <span class="plan-price-amount">
@@ -126,15 +122,13 @@
                             <a class="is-active" id="tab-usable">可使用</a>
                             <a id="tab-outdated">已过期</a>
                         </p>
-                        <a class="panel-block" id="block-usable">
+                        <div class="panel-block is-active" id="block-usable">
                             <table class="table is-striped is-fullwidth">
                                 <thead>
                                     <tr>
                                         <th>节点</th>
                                         <th>开始时间</th>
                                         <th>到期时间</th>
-                                        <th>已用流量</th>
-                                        <th>总流量</th>
                                         <th>流量进度</th>
                                     </tr>
                                 </thead>
@@ -144,27 +138,24 @@
                                             <td>{{ o.proxy_node.name }}</td>
                                             <td>{{ o.start_time }}</td>
                                             <td>{{ o.end_time }}</td>
-                                            <td>{{ o.human_used_traffic }}</td>
-                                            <td>{{ o.human_total_traffic }}</td>
                                             <td>
                                                 <progress class="progress {{ o.progress_color }}"
                                                           value="{{ o.used_traffic }}"
-                                                          max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}%
+                                                          max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}{{ o.used_percentage }}
+                                                <span>{{ o.human_used_traffic }} / {{ o.human_total_traffic }}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        </a>
-                        <a class="panel-block is-hidden" id="block-outdated">
+                        </div>
+                        <div class="panel-block is-hidden" id="block-outdated">
                             <table class="table is-striped is-fullwidth">
                                 <thead>
                                     <tr>
                                         <th>节点</th>
                                         <th>开始时间</th>
                                         <th>到期时间</th>
-                                        <th>已用流量</th>
-                                        <th>总流量</th>
                                         <th>流量进度</th>
                                     </tr>
                                 </thead>
@@ -174,18 +165,17 @@
                                             <td>{{ o.proxy_node.name }}</td>
                                             <td>{{ o.start_time }}</td>
                                             <td>{{ o.end_time }}</td>
-                                            <td>{{ o.human_used_traffic }}</td>
-                                            <td>{{ o.human_total_traffic }}</td>
                                             <td>
                                                 <progress class="progress {{ o.progress_color }}"
-                                                          value="{{ o.used_traffic }}"
-                                                          max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}%
+                                                value="{{ o.used_traffic }}"
+                                                max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}{{ o.used_percentage }}
+                                      <span>{{ o.human_used_traffic }} / {{ o.human_total_traffic }}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        </a>
+                        </div>
                     </nav>
                 </div>
             </div>

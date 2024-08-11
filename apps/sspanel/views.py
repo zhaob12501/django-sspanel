@@ -218,10 +218,10 @@ class UserInfoView(LoginRequiredMixin, View):
         shared_node_count = 0
         occupied_node_count = 0
         for node in user_active_nodes:
-            if node.is_shared_node:
-                shared_node_count += 1
-            else:
+            if UserProxyNodeOccupancy.check_node_occupied_by_user(node, user):
                 occupied_node_count += 1
+            else:
+                shared_node_count += 1
 
         context = {
             "user": user,
