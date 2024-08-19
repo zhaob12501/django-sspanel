@@ -88,8 +88,7 @@ class UserNodeBaseView(View):
             node_list = node_list.filter(country=location)
 
         if node_list.count() == 0:
-            return None, HttpResponseBadRequest("no active nodes for you")
-
+            return user, [m.ProxyNode.fake_node("当前没有可用节点")]
         return user, node_list
 
 

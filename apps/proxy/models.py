@@ -306,6 +306,14 @@ class ProxyNode(BaseNodeModel, SequenceMixin):
         occupancies_query = UserProxyNodeOccupancy.get_node_occupancies(self)
         return occupancies_query.count() > 0
 
+    @classmethod
+    def fake_node(cls, name):
+        node = cls(name=name, node_type=cls.NODE_TYPE_SS, server="0.0.0.0")
+        SSConfig(method="aes-256-gcm", proxy_node=node)
+        # here is the magic, set cached_property to False
+        node.enable_relay = False
+        return node
+
     def get_node_users(self):
         # 1. if node is not enable, return empty list
         if not self.enable:
