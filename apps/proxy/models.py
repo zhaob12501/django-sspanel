@@ -693,7 +693,6 @@ class RelayNode(BaseNodeModel):
             for proxy_node in nodes:
                 if not proxy_node.enable:
                     continue
-
                 if not proxy_node.enable_ehco_tunnel:
                     tcp_remote = f"{proxy_node.server}:{proxy_node.get_user_port()}"
                 else:
@@ -702,8 +701,6 @@ class RelayNode(BaseNodeModel):
                         tcp_remote = f"ws://{tcp_remote}"
                     elif rule.transport_type == c.TRANSPORT_WSS:
                         tcp_remote = f"wss://{tcp_remote}"
-                    else:
-                        raise Exception("not support transport type")
                 tcp_remotes.append(tcp_remote)
                 rule_cfg = {
                     "label": rule.name,
