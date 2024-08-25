@@ -377,7 +377,7 @@ class UserSocialProfile(models.Model, UserMixin):
         self.save()
 
 
-class UserOrder(models.Model, UserMixin):
+class UserOrder(UserMixin, models.Model):
     ALIPAY_CALLBACK_URL = f"{settings.SITE_HOST}/api/callback/alipay"
     DEFAULT_ORDER_TIME_OUT = "10m"
     STATUS_CREATED = 0
@@ -411,7 +411,9 @@ class UserOrder(models.Model, UserMixin):
     class Meta:
         verbose_name = "用户订单"
         verbose_name_plural = "用户订单"
-        index_together = ["user", "status"]
+        indexes = [
+            models.Index(fields=["user", "status"]),
+        ]
 
     @classmethod
     def gen_out_trade_no(cls):
@@ -1109,7 +1111,9 @@ class TicketMessage(models.Model):
         verbose_name = "工单回复"
         verbose_name_plural = "工单回复"
         ordering = ("ticket", "created_at")
-        index_together = ["ticket", "created_at"]
+        indexes = [
+            models.Index(fields=["ticket", "created_at"]),
+        ]
 
     @classmethod
     def create_message(cls, user, ticket, message):

@@ -16,9 +16,10 @@ if SENTRY_DSN:
         release=SENTRY_RELEASE_TAG,
         traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
         environment=SENTRY_ENVIRONMENT,
+        auto_session_tracking=False,
         integrations=[
+            RedisIntegration(),
             CeleryIntegration(),
             DjangoIntegration(transaction_style="function_name"),
-            RedisIntegration(),
         ],
     )

@@ -2,6 +2,7 @@
 tianyi: 天一是三渣的早期作品:<贩罪>的主角，是像猫一样生活的男人，并且善于计算人心/性，做出各种冷静的数据分析
 这里存一些数据分析相关的东西
 """
+
 import decimal
 from typing import List
 

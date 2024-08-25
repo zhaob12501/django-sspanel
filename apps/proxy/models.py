@@ -803,7 +803,9 @@ class UserTrafficLog(BaseLogModel):
         verbose_name = "用户流量记录"
         verbose_name_plural = "用户流量记录"
         ordering = ["-created_at"]
-        index_together = ["user", "proxy_node", "created_at"]
+        indexes = [
+            models.Index(fields=["user", "proxy_node", "created_at"]),
+        ]
 
     def __str__(self) -> str:
         return f"用户流量记录:{self.id}"

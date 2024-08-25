@@ -167,9 +167,9 @@
                                             <td>{{ o.end_time }}</td>
                                             <td>
                                                 <progress class="progress {{ o.progress_color }}"
-                                                value="{{ o.used_traffic }}"
-                                                max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}{{ o.used_percentage }}
-                                      <span>{{ o.human_used_traffic }} / {{ o.human_total_traffic }}</span>
+                                                          value="{{ o.used_traffic }}"
+                                                          max="{{ o.total_traffic }}"></progress>{{ o.used_percentage }}{{ o.used_percentage }}
+                                                <span>{{ o.human_used_traffic }} / {{ o.human_total_traffic }}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}
