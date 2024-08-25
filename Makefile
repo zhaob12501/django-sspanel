@@ -11,9 +11,6 @@ update:
 fmt:
 	isort .
 	ruff format .
-	djlint --reformat .
-
-fmt-templates:
 	djlint --reformat templates/
 
 check:

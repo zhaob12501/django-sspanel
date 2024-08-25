@@ -342,6 +342,7 @@ class ProxyNode(BaseNodeModel, SequenceMixin):
 
     def get_ehco_server_config(self):
         if self.enable_ehco_tunnel:
+            tcp_remotes = [f"127.0.0.1:{self.ehco_relay_port}"]
             return {
                 "web_port": self.ehco_web_port,
                 "web_token": self.ehco_web_token,
@@ -352,8 +353,8 @@ class ProxyNode(BaseNodeModel, SequenceMixin):
                         "listen": f"{self.ehco_listen_host}:{self.ehco_listen_port}",
                         "listen_type": self.ehco_listen_type,
                         "transport_type": self.ehco_transport_type,
-                        "tcp_remotes": [f"127.0.0.1:{self.ehco_relay_port}"],
-                        "udp_remotes": [],
+                        "tcp_remotes": tcp_remotes,
+                        "remotes": tcp_remotes,
                     }
                 ],
             }
@@ -689,34 +690,34 @@ class RelayNode(BaseNodeModel):
             # NOTE 这里要求代理节点的隧道监听类型一致
             nodes: List[ProxyNode] = rule.proxy_nodes.all()
             tcp_remotes = []
-            udp_remotes = []
             for proxy_node in nodes:
                 if not proxy_node.enable:
                     continue
-                if (
-                    proxy_node.enable_ehco_tunnel
-                    and rule.transport_type != c.TRANSPORT_RAW
-                ):
-                    tcp_remote = f"{proxy_node.server}:{proxy_node.ehco_listen_port}"
-                else:
+
+                if not proxy_node.enable_ehco_tunnel:
                     tcp_remote = f"{proxy_node.server}:{proxy_node.get_user_port()}"
-                if rule.transport_type in c.WS_TRANSPORTS:
-                    tcp_remote = f"wss://{tcp_remote}"
-                if self.enable_udp and proxy_node.enable_udp:
-                    udp_remotes.append(
-                        f"{proxy_node.server}:{proxy_node.get_user_port()}"
-                    )
+                else:
+                    tcp_remote = f"{proxy_node.server}:{proxy_node.ehco_listen_port}"
+                    if rule.transport_type == c.TRANSPORT_WS:
+                        tcp_remote = f"ws://{tcp_remote}"
+                    elif rule.transport_type == c.TRANSPORT_WSS:
+                        tcp_remote = f"wss://{tcp_remote}"
+                    else:
+                        raise Exception("not support transport type")
                 tcp_remotes.append(tcp_remote)
-            relay_configs.append(
-                {
+                rule_cfg = {
                     "label": rule.name,
                     "listen": f"0.0.0.0:{rule.relay_port}",
                     "listen_type": rule.listen_type,
-                    "tcp_remotes": tcp_remotes,
-                    "udp_remotes": udp_remotes,
                     "transport_type": rule.transport_type,
+                    "tcp_remotes": tcp_remotes,
+                    "remotes": tcp_remotes,
+                    "options": {
+                        "enable_multipath_tcp": True,
+                        "enable_udp": rule.enable_udp and proxy_node.enable_udp,
+                    },
                 }
-            )
+                relay_configs.append(rule_cfg)
         cfg = {
             "enable_ping": self.enable_ping,
             "relay_configs": relay_configs,

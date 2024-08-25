@@ -27,9 +27,10 @@ description = "django sspanel"
 license = "GPL-3.0 License"
 name = "django-sspanel"
 version = "0.1.0"
+package-mode = false
 
 [tool.poetry.dependencies]
-aiohttp="^3.9.3"
+aiohttp = "^3.9.3"
 Django = "^4.2.6"
 Markdown = "^3.3.4"
 PyMySQL = "^1.1.0"
