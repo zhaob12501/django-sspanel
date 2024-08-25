@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.db.models.query import QuerySet
 
 from apps.ext import lock
 from apps.proxy import models as m
@@ -99,7 +100,10 @@ class SubscribeView(UserNodeBaseView):
             node_list = response_or_nodes
 
             if protocol := request.GET.get("protocol"):
-                if protocol in m.ProxyNode.NODE_TYPE_SET:
+                if (
+                    protocol in m.ProxyNode.NODE_TYPE_SET
+                    and type(node_list) is QuerySet
+                ):
                     node_list = node_list.filter(node_type=protocol)
 
             sub_client = request.GET.get("client")
