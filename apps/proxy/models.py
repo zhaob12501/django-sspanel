@@ -693,7 +693,7 @@ class RelayNode(BaseNodeModel):
             for proxy_node in nodes:
                 if not proxy_node.enable:
                     continue
-                if not proxy_node.enable_ehco_tunnel:
+                if not proxy_node.enable_ehco_tunnel or proxy_node.enable_direct:
                     tcp_remote = f"{proxy_node.server}:{proxy_node.get_user_port()}"
                 else:
                     tcp_remote = f"{proxy_node.server}:{proxy_node.ehco_listen_port}"
