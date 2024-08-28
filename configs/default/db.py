@@ -6,7 +6,7 @@ if os.getenv("DJANGO_ENV") != "ci":
     # mysql 设置
     DATABASES = {
         "default": {
-            "ENGINE": "django_prometheus.db.backends.mysql",
+            "ENGINE": "django.db.backends.mysql",
             "NAME": "sspanel",
             "PASSWORD": os.getenv("MYSQL_PASSWORD", "yourpass"),
             "HOST": os.getenv("MYSQL_HOST", "127.0.0.1"),

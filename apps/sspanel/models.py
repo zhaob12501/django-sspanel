@@ -1,13 +1,11 @@
 import datetime
 import random
-import re
 import time
 from decimal import Decimal
 from socket import timeout
 from urllib.parse import urlencode
 from uuid import uuid4
 
-import markdown
 import pendulum
 from django.conf import settings
 from django.contrib import messages
@@ -17,6 +15,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import IntegrityError, models, transaction
 from django.utils import functional, timezone
 from redis.exceptions import LockError
+from trix_editor.fields import TrixEditorField
 
 from apps import constants as c
 from apps.ext import cache, encoder, lock, pay
@@ -1008,7 +1007,7 @@ class Announcement(models.Model):
     """公告"""
 
     time = models.DateTimeField("时间", auto_now_add=True)
-    body = models.TextField("主体")
+    body = TrixEditorField("主体")
 
     class Meta:
         verbose_name = "系统公告"
@@ -1018,11 +1017,6 @@ class Announcement(models.Model):
     def __str__(self):
         return "日期:{}".format(str(self.time)[:9])
 
-    def save(self, *args, **kwargs):
-        md = markdown.Markdown(extensions=["markdown.extensions.extra"])
-        self.body = md.convert(self.body)
-        super(Announcement, self).save(*args, **kwargs)
-
     @classmethod
     def send_first_visit_msg(cls, request):
         anno = cls.objects.order_by("-time").first()
@@ -1030,17 +1024,6 @@ class Announcement(models.Model):
             return
         request.session["first_visit"] = True
         messages.warning(request, anno.plain_text, extra_tags="最新通知！")
-
-    @property
-    def plain_text(self):
-        # TODO 现在db里存的是md转换成的html，这里之后可能要优化。转换的逻辑移到前端去
-        re_br = re.compile("<br\s*?/?>")  # 处理换行
-        re_h = re.compile("</?\w+[^>]*>")  # HTML标签
-        s = re_br.sub("", self.body)  # 去掉br
-        s = re_h.sub("", s)  # 去掉HTML 标签
-        blank_line = re.compile("\n+")  # 去掉多余的空行
-        s = blank_line.sub("", s)
-        return s
 
 
 class Ticket(models.Model):

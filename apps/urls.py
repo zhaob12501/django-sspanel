@@ -12,6 +12,7 @@ urlpatterns = [
         name="password_reset",
     ),  # NOTE 重写了重置密码的逻辑 一定要在`django.contrib.auth.urls`之前注册，不然会被覆盖
     path("accounts/", include("django.contrib.auth.urls")),
+    path("trix-editor/", include("trix_editor.urls")),
 ]
 
 # append sspanel template urls
@@ -27,11 +28,6 @@ urlpatterns.append(
 # append admin urls
 urlpatterns.append(
     path("admin/", admin.site.urls, name="admin"),
-)
-
-# append prometheus urls
-urlpatterns.append(
-    path("prom/", include("django_prometheus.urls")),
 )
 
 # append openapi urls

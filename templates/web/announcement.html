@@ -10,28 +10,19 @@
         </section>
     </div>
     <div class="column is-12">
-        <div class="box">
-            <div class="content">
-                <p class="subtitle">公告记录:</p>
-                <table class="table is-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>时间</th>
-                            <th>内容</th>
-                        </tr>
-                    </thead>
-                    {% for record in anno %}
-                        <tr>
-                            <td>#{{ record.pk }}</td>
-                            <td>{{ record.time }}</td>
-                            <td>{{ record.body |safe }}</td>
-                        </tr>
-                    {% empty %}
-                        <h2 class="subtitle">暂时还没发出公告</h2>
-                    {% endfor %}
-                </table>
-            </div>
+        <div class="panel">
+            {% for record in anno %}
+                <div class="panel-block is-block">
+                    <div class="content">{{ record.body|safe }}</div>
+                    <div class="is-flex is-justify-content-flex-end mt-2">
+                        <small>{{ record.time }}</small>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="panel-block">
+                    <h2 class="subtitle">暂时还没发出公告</h2>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock authed %}
