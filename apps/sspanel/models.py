@@ -1023,7 +1023,7 @@ class Announcement(models.Model):
         if not anno or request.session.get("first_visit"):
             return
         request.session["first_visit"] = True
-        messages.warning(request, anno.plain_text, extra_tags="最新通知！")
+        messages.warning(request, anno.body, extra_tags="最新通知！")
 
 
 class Ticket(models.Model):

@@ -116,7 +116,7 @@
                 }
                 url = "{% url 'api:purchase' %}"
                 $.post(url, data, function(results) {
-                    swal(results.title, results.subtitle, results.status)
+                    Swal.fire(results.title, results.subtitle, results.status)
                 })
             })
         </script>

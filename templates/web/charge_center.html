@@ -173,7 +173,7 @@
                 requestButton.attr("disabled", "disabled")
                 $.post(url, data, function(results) {
                     info = results.info
-                    swal(info.title, info.subtitle, info.status)
+                    Swal.fire(info.title, info.subtitle, info.status)
                     if (info.status == "success") {
                         // 追加二维码图片
                         codeBox.attr('class', '')
@@ -185,7 +185,7 @@
                     }
                 })
             } else {
-                swal('抱歉~', '最少捐赠一元', 'error')
+                Swal.fire('抱歉~', '最少捐赠一元', 'error')
             }
         }
         requestButton.click(payrequest)
@@ -195,18 +195,18 @@
             $.getJSON(url, function(results) {
                 info = results.info;
                 if (byTicker == false) {
-                    swal(info.title, info.subtitle, info.status);
+                    Swal.fire(info.title, info.subtitle, info.status);
                 } else {
                     repetitionCount++;
                     if (repetitionCount >= maxRepetitions) {
                         clearInterval(queryTimer);
-                        swal("自动查询超时", "请点击按钮手动查询", "error");
+                        Swal.fire("自动查询超时", "请点击按钮手动查询", "error");
                     }
                     // only show msg when success
                     if (info.status == "success") {
                         // 停止定时器
                         clearInterval(queryTimer);
-                        swal(info.title, info.subtitle, info.status);
+                        Swal.fire(info.title, info.subtitle, info.status);
                     } else {
                         console.log("repetitionCount", repetitionCount)
                         console.log("api return", info)

@@ -301,7 +301,7 @@
                 }
                 $.post(url, data, function(results) {
                     info = results
-                    swal(info.title, info.subtitle, info.status).then(function() {
+                    Swal.fire(info.title, info.subtitle, info.status).then(function() {
                         location.reload();
                     })
                 })
@@ -320,12 +320,12 @@
                     url = "{% url 'api:change_theme' %}"
                     $.post(url, data, function(results) {
                         info = results
-                        swal(info.title, info.subtitle, info.status).then(function() {
+                        Swal.fire(info.title, info.subtitle, info.status).then(function() {
                             location.reload();
                         })
                     })
                 } else {
-                    swal('错误！', '请选择你要更换的主题', 'error')
+                    Swal.fire('错误！', '请选择你要更换的主题', 'error')
                 }
             }
             ThemeButton.click(changeTheme)
@@ -341,10 +341,10 @@
                     url = "{% url 'api:user_settings' %}"
                     $.post(url, data, function(results) {
                         info = results
-                        swal(info.title, info.subtitle, info.status)
+                        Swal.fire(info.title, info.subtitle, info.status)
                     })
                 } else {
-                    swal('错误！', '请输入密码', 'error')
+                    Swal.fire('错误！', '请输入密码', 'error')
                 }
             }
             PasswordButton.click(changePassword)
@@ -373,7 +373,7 @@
             // 复制订阅地址
             var clip = new Clipboard('#id-button-clip');
             clip.on('success', function(e) {
-                swal("复制成功", "订阅地址已复制到剪贴板", "success");
+                Swal.fire("复制成功", "订阅地址已复制到剪贴板", "success");
             });
 
             // 重置订阅连接
@@ -385,7 +385,7 @@
                 }
                 $.post(url, data, function(results) {
                     info = results
-                    swal(info.title, info.subtitle, info.status).then(function() {
+                    Swal.fire(info.title, info.subtitle, info.status).then(function() {
                         location.reload();
                     })
                 })
