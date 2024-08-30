@@ -689,7 +689,7 @@ class RelayNode(BaseNodeModel):
         for rule in rules:
             # NOTE 这里要求代理节点的隧道监听类型一致
             nodes: List[ProxyNode] = rule.proxy_nodes.all()
-            tcp_remotes = []
+            remotes = []
             for proxy_node in nodes:
                 if not proxy_node.enable:
                     continue
@@ -701,20 +701,20 @@ class RelayNode(BaseNodeModel):
                         tcp_remote = f"ws://{tcp_remote}"
                     elif rule.transport_type == c.TRANSPORT_WSS:
                         tcp_remote = f"wss://{tcp_remote}"
-                tcp_remotes.append(tcp_remote)
-                rule_cfg = {
-                    "label": rule.name,
-                    "listen": f"0.0.0.0:{rule.relay_port}",
-                    "listen_type": rule.listen_type,
-                    "transport_type": rule.transport_type,
-                    "tcp_remotes": tcp_remotes,
-                    "remotes": tcp_remotes,
-                    "options": {
-                        "enable_multipath_tcp": True,
-                        "enable_udp": rule.enable_udp and proxy_node.enable_udp,
-                    },
-                }
-                relay_configs.append(rule_cfg)
+                remotes.append(tcp_remote)
+            rule_cfg = {
+                "label": rule.name,
+                "listen": f"0.0.0.0:{rule.relay_port}",
+                "listen_type": rule.listen_type,
+                "transport_type": rule.transport_type,
+                "remotes": remotes,
+                "options": {
+                    "enable_multipath_tcp": True,
+                    "enable_udp": rule.enable_udp and proxy_node.enable_udp,
+                },
+            }
+            relay_configs.append(rule_cfg)
+
         cfg = {
             "enable_ping": self.enable_ping,
             "relay_configs": relay_configs,
