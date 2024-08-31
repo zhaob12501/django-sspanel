@@ -8,8 +8,6 @@ external-controller: 0.0.0.0:9090
 proxy-groups:
   - name: PROXY
     type: select
-    proxies:
-      - auto
     use:
       - {{ provider_name }}-all
 
