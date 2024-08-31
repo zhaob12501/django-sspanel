@@ -10,31 +10,34 @@ proxy-groups:
     type: select
     proxies:
       - auto
-      {% for loc in node_location_set %}- {{ loc }}
-      {% endfor %}
     use:
       - {{ provider_name }}-all
 
-  {% for loc in node_location_set %}
-  - name: {{ loc }}
-    type: select
+  - name: HK-LB
+    type: load-balance
+    strategy: consistent-hashing
+    filter: "香港|hk|HK"
     use:
-      - {{ provider_name }}-{{ loc }}
-  {% endfor %}
+      - {{ provider_name }}-all
+
+  - name: JP-LB
+    type: load-balance
+    strategy: consistent-hashing
+    filter: "日本|jp|JP"
+    use:
+      - {{ provider_name }}-all
+
+  - name: US-LB
+    type: load-balance
+    strategy: consistent-hashing
+    filter: "美国|us|US"
+    use:
+      - {{ provider_name }}-all
 
   - name: PROXY-NATIVE-IP
     type: select
     use:
       - {{ provider_name }}-native-ip
-
-  - name: auto
-    type: url-test
-    use:
-      - {{ provider_name }}-all
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-    tolerance: 150
-    lazy: true
 
   - name: Final
     type: select
@@ -60,25 +63,6 @@ proxy-providers:
       url: {{ native_ip_proxy_provider_url|safe }}
       interval: 3600
       path: ./providers/{{ provider_name }}-native-ip.yaml
-      health-check:
-        enable: true
-        interval: 300
-        tolerance: 150
-        lazy: true
-        url: http://www.gstatic.com/generate_204
-{% for loc in node_location_set %}
-  {{ provider_name }}-{{ loc }}:
-    type: http
-    url: {{ all_proxy_provider_url|safe }}&location={{ loc }}
-    interval: 3600
-    path: ./providers/{{ provider_name }}-{{ loc }}.yaml
-    health-check:
-      enable: true
-      interval: 300
-      tolerance: 150
-      lazy: true
-      url: http://www.gstatic.com/generate_204
-    {% endfor %}
 
 rule-providers:
   reject:
@@ -209,4 +193,3 @@ rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,Final
-
