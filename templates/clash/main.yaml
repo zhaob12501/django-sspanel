@@ -8,6 +8,11 @@ external-controller: 0.0.0.0:9090
 proxy-groups:
   - name: PROXY
     type: select
+    proxies:
+      - DIRECT
+      - HK-LB
+      - JP-LB
+      - US-LB
     use:
       - {{ provider_name }}-all
 
