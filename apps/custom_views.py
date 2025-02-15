@@ -1,34 +1,4 @@
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.views import PasswordResetView
 from django.core.paginator import EmptyPage, Paginator
-from django.template import loader
-
-from apps.sspanel.models import User
-from apps.sspanel.tasks import send_mail_to_users_task
-
-
-class AsyncPasswordResetForm(PasswordResetForm):
-    def send_mail(
-        self,
-        subject_template_name,
-        email_template_name,
-        context,
-        from_email,
-        to_email,
-        html_email_template_name=None,
-    ):
-        """
-        Copy and adapted from django.contrib.auth.forms.PasswordResetForm
-        """
-        subject = loader.render_to_string(subject_template_name, context)
-        subject = "".join(subject.splitlines())
-        body = loader.render_to_string(email_template_name, context)
-        user = User.objects.get(email=to_email)
-        send_mail_to_users_task.delay([user.id], subject, body)
-
-
-class AsyncPasswordResetView(PasswordResetView):
-    form_class = AsyncPasswordResetForm
 
 
 class PageListView:
@@ -80,13 +50,13 @@ class PageListView:
                     last = True
         elif page >= total:
             # 当前页为最后一页时
-            left = page_list[page - 3 if page > 3 else 0 : page - 1]
+            left = page_list[(page - 3) if (page - 3) > 0 else 0 : page - 1]
             if len(left) > 0 and left[0] > 2:
                 left_has_more = True
             if len(left) > 0 and left[0] > 1:
                 first = True
         else:
-            left = page_list[page - 2 if page > 2 else 0 : page - 1]
+            left = page_list[(page - 2) if (page - 2) > 0 else 0 : page - 1]
             right = page_list[page : page + 2]
             # 是否需要显示最后一页和最后一页前的省略号
             if len(right) > 0 and right[-1] < total - 1:
@@ -98,7 +68,7 @@ class PageListView:
                 left_has_more = True
             if len(left) > 0 and left[0] > 1:
                 first = True
-        return {
+        context = {
             "contacts": contacts,
             "page_list": page_list,
             "left": left,
@@ -110,3 +80,4 @@ class PageListView:
             "total": total,
             "page": page,
         }
+        return context

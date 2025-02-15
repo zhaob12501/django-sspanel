@@ -12,20 +12,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "trix_editor",
-    "corsheaders",
-    "django_telegram_login",
+    "django_prometheus",
     "anymail",
     "apps.sspanel",
     "apps.proxy",
     "apps.stats",
-    "apps.openapi",
 ]
 
-
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -34,6 +29,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.mw.ErrorHandlerMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "apps.urls"
@@ -90,13 +86,3 @@ AUTHENTICATION_BACKENDS = (
 
 # 用户模型设置：
 AUTH_USER_MODEL = "sspanel.User"
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# set debug in env
-DEBUG = os.getenv("DEBUG", "True") == "True"
-
-
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 20,
-}

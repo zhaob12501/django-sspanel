@@ -29,6 +29,7 @@ def make_default_key(f, *args, **kwargs):
 
 
 class cached:
+
     client = None
 
     def __init__(self, func=None, ttl=60 * 60, cache_key=make_default_key):
@@ -60,9 +61,11 @@ class cached:
 
         def make_cache_key(*args, **kwargs):
             if callable(self.cache_key):
-                return self.cache_key(f, *args, **kwargs)
+                key = self.cache_key(f, *args, **kwargs)
             else:
-                return self.cache_key
+                key = self.cache_key
+
+            return key
 
         wrapper.uncached = f
         wrapper.ttl = self.ttl
@@ -90,7 +93,7 @@ class RedisClient:
     def set_many(self, mapping, ttl=60 * 5):
         mapping = {k: pickle.dumps(v) for k, v in mapping.items()}
         rv = self._client.mset(mapping)
-        for k in mapping:
+        for k in mapping.keys():
             self._client.expire(k, ttl)
         return rv
 

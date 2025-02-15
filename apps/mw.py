@@ -9,7 +9,8 @@ class ErrorHandlerMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        return self.get_response(request)
+        response = self.get_response(request)
+        return response
 
     def process_exception(self, request, exception):
         if isinstance(exception, LockError):

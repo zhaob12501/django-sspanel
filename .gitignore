@@ -111,7 +111,3 @@ static/
 
 *.log
 go.mod
-Country.mmdb
-
-localdev/*
-

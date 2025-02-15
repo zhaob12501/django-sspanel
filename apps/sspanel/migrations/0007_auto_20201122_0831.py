@@ -6,6 +6,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ("sspanel", "0006_auto_20201111_0742"),
     ]
@@ -29,10 +30,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name="emailsendlog",
-            options={
-                "verbose_name": "邮件发送记录",
-                "verbose_name_plural": "邮件发送记录",
-            },
+            options={"verbose_name": "邮件发送记录", "verbose_name_plural": "邮件发送记录"},
         ),
         migrations.AlterModelOptions(
             name="goods",
@@ -88,10 +86,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name="usercheckinlog",
-            options={
-                "verbose_name": "用户签到记录",
-                "verbose_name_plural": "用户签到记录",
-            },
+            options={"verbose_name": "用户签到记录", "verbose_name_plural": "用户签到记录"},
         ),
         migrations.AlterModelOptions(
             name="userorder",
@@ -99,10 +94,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name="userreflog",
-            options={
-                "verbose_name": "用户推荐记录",
-                "verbose_name_plural": "用户推荐记录",
-            },
+            options={"verbose_name": "用户推荐记录", "verbose_name_plural": "用户推荐记录"},
         ),
         migrations.CreateModel(
             name="UserSubLog",

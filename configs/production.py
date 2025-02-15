@@ -1,5 +1,3 @@
-import os
+from configs.default import *  # noqa
 
-# only allow set DEBUG in env
-if os.getenv("DEBUG", "") != "True":
-    DEBUG = False
+DEBUG = False

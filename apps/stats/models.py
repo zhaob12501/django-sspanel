@@ -10,6 +10,7 @@ from apps.sspanel import models as sm
 
 
 class DailyStats(models.Model):
+
     date = models.DateField(verbose_name="创建日期", unique=True)
     updated_at = models.DateTimeField(verbose_name="更新时间", auto_now=True)
 
@@ -20,12 +21,6 @@ class DailyStats(models.Model):
     order_count = models.BigIntegerField(verbose_name="用户订单数量", default=0)
     order_amount = models.DecimalField(
         verbose_name="订单总金额",
-        decimal_places=2,
-        max_digits=10,
-        default=decimal.Decimal(0),
-    )
-    cost_amount = models.DecimalField(
-        verbose_name="订单总成本",
         decimal_places=2,
         max_digits=10,
         default=decimal.Decimal(0),
@@ -58,20 +53,15 @@ class DailyStats(models.Model):
         log.order_amount = decimal.Decimal(sm.UserOrder.get_success_order_amount(dt))
 
         log.total_used_traffic = pm.UserTrafficLog.calc_traffic_by_datetime(dt)
-        log.cost_amount = (
-            pm.ProxyNode.calc_all_cost_price() + pm.RelayNode.calc_all_cost_price()
-        ) / 30
         log.save()
         return log
 
     @classmethod
     def get_date_str_dict(cls, dt_list: List[pendulum.DateTime]):
         """NOTE key: date_str  value: log"""
-        log_dict = {
-            str(log.date): log
-            for log in cls.objects.filter(date__in=[dt.date() for dt in dt_list])
-        }
-
+        log_dict = {}
+        for log in cls.objects.filter(date__in=[dt.date() for dt in dt_list]):
+            log_dict[str(log.date)] = log
         for dt in dt_list:
             if not log_dict.get(str(dt.date())):
                 log_dict[str(dt.date())] = cls.create_or_update_stats(dt)

@@ -15,9 +15,10 @@ def add_class(value, arg):
 def mix_name(value, arg):
     if value:
         value = str(value)
-        return value[0] + "***" + value[-1]
+        mix_name = value[0] + "***" + value[-1]
     else:
-        return "***"
+        mix_name = "***"
+    return mix_name
 
 
 # 显示setting value

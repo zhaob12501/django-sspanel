@@ -12,6 +12,7 @@ import apps.utils
 
 
 class Migration(migrations.Migration):
+
     initial = True
 
     dependencies = [("auth", "0009_alter_user_last_name_max_length")]
@@ -117,9 +118,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "invitecode_num",
-                    models.PositiveIntegerField(
-                        default=5, verbose_name="可生成的邀请码数量"
-                    ),
+                    models.PositiveIntegerField(default=5, verbose_name="可生成的邀请码数量"),
                 ),
                 (
                     "level",
@@ -215,10 +214,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                (
-                    "time",
-                    models.DateTimeField(auto_now_add=True, verbose_name="捐赠时间"),
-                ),
+                ("time", models.DateTimeField(auto_now_add=True, verbose_name="捐赠时间")),
                 (
                     "money",
                     models.DecimalField(
@@ -267,9 +263,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "transfer",
-                    models.BigIntegerField(
-                        default=1073741824, verbose_name="增加的流量"
-                    ),
+                    models.BigIntegerField(default=1073741824, verbose_name="增加的流量"),
                 ),
                 (
                     "money",
@@ -307,9 +301,7 @@ class Migration(migrations.Migration):
                 (
                     "status",
                     models.SmallIntegerField(
-                        choices=[(1, "上架"), (-1, "下架")],
-                        default=1,
-                        verbose_name="商品状态",
+                        choices=[(1, "上架"), (-1, "下架")], default=1, verbose_name="商品状态"
                     ),
                 ),
                 (
@@ -325,9 +317,7 @@ class Migration(migrations.Migration):
                 (
                     "code_type",
                     models.IntegerField(
-                        choices=[(1, "公开"), (0, "不公开")],
-                        default=0,
-                        verbose_name="类型",
+                        choices=[(1, "公开"), (0, "不公开")], default=0, verbose_name="类型"
                     ),
                 ),
                 (
@@ -374,10 +364,7 @@ class Migration(migrations.Migration):
                         blank=True, max_length=128, null=True, verbose_name="用户名"
                     ),
                 ),
-                (
-                    "time",
-                    models.DateTimeField(auto_now_add=True, verbose_name="捐赠时间"),
-                ),
+                ("time", models.DateTimeField(auto_now_add=True, verbose_name="捐赠时间")),
                 (
                     "code",
                     models.CharField(
@@ -580,9 +567,7 @@ class Migration(migrations.Migration):
                 (
                     "status",
                     models.SmallIntegerField(
-                        choices=[(1, "开启"), (-1, "关闭")],
-                        default=1,
-                        verbose_name="状态",
+                        choices=[(1, "开启"), (-1, "关闭")], default=1, verbose_name="状态"
                     ),
                 ),
                 (
